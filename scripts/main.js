@@ -34,16 +34,27 @@ function playRound(PlayerSelection, ComputerSelection){
 }
 
 function game(){
+    
+    const inputProtectionDict = {
+        'rock'      : 'meow',
+        'paper'     : 'meow',
+        'scissors'  : 'meow'
+    };
     let tally = 0;
     let PlayerSelection;
     let ComputerSelection;
     let ResultMessage;
     let ResultArray;
 
+
     for(let i = 0; i<5; i++){
-        //get inputs for this round
-        //TODO: add protection for NULL case AND bullshit entry of PlayerSelection
+        
+        //get inputs for this round, with input protection
         PlayerSelection = prompt('Enter your selection: Rock, Paper, or Scissors?');
+        while(!inputProtectionDict.hasOwnProperty(PlayerSelection.toLowerCase())){
+            PlayerSelection = prompt('Invalid selection, please choose: Rock, Paper, or Scissors?');
+        }
+
         ComputerSelection = computerPlay();
 
         //play round
@@ -66,11 +77,14 @@ function game(){
         console.log(ResultMessage);
 
     }
-    if(tally > 0){
-        console.log('You win the game!');
+    if(tally == 0){
+        console.log('You tied the game!');
+    }
+    else if(tally < 0){
+        console.log('You lose the game!');
     }
     else{
-        console.log('You lose the game!');
+        console.log('You win the game!');
     }
 }
 
