@@ -1,3 +1,29 @@
+const selRock = document.querySelector('.rock');
+const selPaper = document.querySelector('.paper');
+const selScissors = document.querySelector('.scissors');
+var playerScore = document.querySelector('.playerScore');
+var compScore = document.querySelector('.compScore');
+var resultMessage = document.querySelector('.resultMessage');
+
+selRock.addEventListener('click', function(){
+    //todo
+    playRound('rock');
+});
+selPaper.addEventListener('click', function(){
+    //todo
+    playRound('paper');
+});
+selScissors.addEventListener('click', function(){
+    //todo
+    playRound('scissors')
+});
+
+var globalPlayerScore = 0;
+var globalCompScore = 0;
+
+/*
+* Function that returns random selection of Rock, Paper, or Scissors
+*/
 function computerPlay(){
     const ResultDict = {
         '0': 'Rock',
@@ -7,85 +33,74 @@ function computerPlay(){
     return ResultDict[Math.floor(Math.random() * 3)];    
 }
 
-function playRound(PlayerSelection, ComputerSelection){
+/*
+*
+*/
+function playRound(PlayerSelection){
     //key value pairs for wins and losses
         //first element is 1 if the players wins
         //second element is for correct verb in result message
     const ScoringDict = {
-        'rockScissors'  : [1, ' smashes '],
-        'paperRock'     : [1, ' covers '],
-        'scissorsPaper' : [1, ' cut '],
-        'rockPaper'     : [0, ' is covered by '],
-        'paperScissors' : [0, ' is cut by '],
-        'scissorsRock'  : [0, ' are smashed by ']
+        'rockScissors'  : [1, 'rock', ' smashes '],
+        'paperRock'     : [1, 'paper',' covers '],
+        'scissorsPaper' : [1, 'scissors',' cut '],
+        'rockPaper'     : [0, 'rock',' is covered by '],
+        'paperScissors' : [0, 'paper',' is cut by '],
+        'scissorsRock'  : [0, 'scissors',' are smashed by ']
     };
 
+    let compSel = computerPlay();
+    let result;
     //create dictKey by appending PlayerSelection and ComputerSelection
-    dictKey = PlayerSelection.toLowerCase() + ComputerSelection;
+    let dictKey = PlayerSelection + compSel;
+    console.log(dictKey);
+
     
-    //if the key is in the dict, return the value
-    if(ScoringDict.hasOwnProperty(dictKey)){
-        return ScoringDict[dictKey];
+    if(!ScoringDict.hasOwnProperty(dictKey)){
+        resultMessage.innerText = "Tie!";
+        return;
     }
     else{
-        //players tie
-        return [6,9];
+        //otherwise, someone won. Build result and its message
+        result = ScoringDict[dictKey];
+        result.push(compSel);
     }
+
+    let message = result[1] + result[2] + result[3];
+
+    if(result[0] == 1){
+        //player wins
+        globalPlayerScore += 1;
+        playerScore.innerText = globalPlayerScore;
+        resultMessage.innerText = message;
+    }
+    else{
+        //computer wins
+        globalCompScore += 1;
+        compScore.innerText = globalCompScore;
+        resultMessage.innerText = message;
+    }
+    
 }
 
 function game(){
-    
-    const inputProtectionDict = {
-        'rock'      : 'meow',
-        'paper'     : 'meow',
-        'scissors'  : 'meow'
-    };
-    let tally = 0;
-    let PlayerSelection;
-    let ComputerSelection;
-    let ResultMessage;
-    let ResultArray;
 
-
-    for(let i = 0; i<5; i++){
-        
-        //get inputs for this round, with input protection
-        PlayerSelection = prompt('Enter your selection: Rock, Paper, or Scissors?');
-        while(!inputProtectionDict.hasOwnProperty(PlayerSelection.toLowerCase())){
-            PlayerSelection = prompt('Invalid selection, please choose: Rock, Paper, or Scissors?');
-        }
-
-        ComputerSelection = computerPlay();
-
-        //play round
-        ResultArray = playRound(PlayerSelection, ComputerSelection);
-
-        //Tally score, build result message
-        if(ResultArray[0] == 6){
-            ResultMessage = 'Tie!'
-        }
-        else if(ResultArray[0] == 0){
-            ResultMessage = 'You Lose! ' + PlayerSelection + ResultArray[1] + ComputerSelection;
-            tally--;
-        }
-        else{
-            ResultMessage = 'You Win! ' + PlayerSelection + ResultArray[1] + ComputerSelection;
-            tally++;
-        }
-
-        //announce winner of round
-        console.log(ResultMessage);
-
-    }
-    if(tally == 0){
-        console.log('You tied the game!');
-    }
-    else if(tally < 0){
-        console.log('You lose the game!');
+    console.log("frog");
+    if(globalCompScore < 5 && globalPlayerScore < 5){
+            //do nothing
     }
     else{
-        console.log('You win the game!');
-    }
+        if(globalCompScore > 4){
+            //set message that computer won game
+        }
+        else{
+            //set message that player won game
+        }
+        globalCompScore = 0;
+        globalPlayerScore = 0;
+        playerScore.innerText = globalPlayerScore;
+        compScore.innerText = globalCompScore;
+    } 
 }
 
-game();
+setInterval(game,100);

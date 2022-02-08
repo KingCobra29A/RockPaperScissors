@@ -1,0 +1,33 @@
+.body-wrapper {
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.selection-div {
+    width: 12vw;
+    transition: all .07s ease;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-gap {
+    gap: 5rem;
+}
+
+.animation {
+    transform: scale(1.1);
+    border-color: #ffc600;
+    box-shadow: 0 0 1rem #ffc600;
+}
+
+.resultMessage:empty::before {
+    content:"\200B";
+}
